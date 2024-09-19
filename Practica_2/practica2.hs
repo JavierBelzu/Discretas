@@ -21,8 +21,8 @@ maximoLista (x:xs) = if x > maximoLista xs
                     
 indice :: [a] -> Int -> a
 indice [] a = error "La lista está vacía"
-indice (x:xs) a = if a >= 0 && a <= longitud (x:xs)
-                    then if a == 1
+indice (x:xs) a = if a >= 0 && a <= longitud (x:xs) - 1
+                    then if a == 0
                         then x
                         else indice xs (a-1)
                     else error "El indice no es valido"
