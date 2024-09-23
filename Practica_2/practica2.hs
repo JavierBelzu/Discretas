@@ -9,12 +9,12 @@ sumaLista [] = 0
 sumaLista (x:xs) = x + sumaLista xs
 
 agregaElemento :: [a] -> a -> Bool -> [a]
-agregaElemento list a b = if b == True
+agregaElemento list a b = if b
                     then a : list
                     else list ++ [a]
 
 maximoLista :: (Num a, Ord a) => [a] -> a
-maximoLista [] = 0
+maximoLista [x] = 1
 maximoLista (x:xs) = if x > maximoLista xs
                     then x
                     else maximoLista xs
@@ -33,9 +33,8 @@ divisores :: Int -> [Int]
 divisores x = [y | y <- [1..x], x `mod` y == 0]
 
 conjunto :: Eq a => [a] -> [a]
-conjunto [] = []
+conjunto [x] = [x]
 conjunto (x:xs) = x : [y | y <- conjunto xs, y /= x]
 
 numerosPares :: [Int] -> [Int]
-numerosPares [] = error "No hay elementos en la lista"
 numerosPares (x:xs) = [y | y <- (x:xs), y `mod` 2 == 0]
