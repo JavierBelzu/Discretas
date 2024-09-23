@@ -14,7 +14,7 @@ agregaElemento list a b = if b
                     else list ++ [a]
 
 maximoLista :: (Num a, Ord a) => [a] -> a
-maximoLista [x] = 1
+maximoLista [x] = x
 maximoLista (x:xs) = if x > maximoLista xs
                     then x
                     else maximoLista xs
