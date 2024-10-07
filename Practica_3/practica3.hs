@@ -23,17 +23,16 @@ conjunto (Node c xs) = if estaContenido xs c
                         else Node c (conjunto xs)
 
 eliminarIndice :: List a -> Int -> List a
-eliminarIndice Void _ = Void
-eliminarIndice (Node c xs) y = if y >= 0 && y < longitud (Node c xs)
-                                then if y == 0 
-                                    then xs 
-                                    else Node c (eliminarIndice xs (y-1))
+eliminarIndice Void y = Void
+eliminarIndice (Node c xs) 0 = xs
+eliminarIndice (Node c xs) y = if y > 0 && y < longitud (Node c xs)
+                                then Node c (eliminarIndice xs (y-1))
                                 else error "Indice fuera del rango permitido"
 
 insertarIndice :: List a -> Int -> a -> List a
 insertarIndice Void x y = Node y Void
 insertarIndice (Node c xs) 0 y = Node y (Node c xs)
-insertarIndice (Node c xs) x y = if x>= 0 && x <= longitud (Node c xs)
+insertarIndice (Node c xs) x y = if x > 0 && x <= longitud (Node c xs)
                                     then Node c (insertarIndice xs (x-1) y)
                                     else error "Indice fuera del rango permitido"
 
