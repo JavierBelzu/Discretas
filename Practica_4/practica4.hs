@@ -9,7 +9,6 @@ longitud (Raiz _ izq der) = 1 + longitud izq + longitud der
 -------------------- EJERCICIO 2 --------------------
 profundidad :: Arbol a -> Int 
 profundidad ArbolVacio = 0
-profundidad (Raiz _ ArbolVacio ArbolVacio) = 0
 profundidad (Raiz _ izq der) = 1 + max (profundidad izq) (profundidad der)
 
 
@@ -39,6 +38,12 @@ niveles (Raiz a izq der) = [a] : gygafunction (niveles izq) (niveles der)
 minimo :: Ord a => Arbol a -> a 
 minimo ArbolVacio = error "Arbol vacio"
 minimo (Raiz a ArbolVacio ArbolVacio) = a
+minimo (Raiz a ArbolVacio der) = if a <= minimo der
+                                    then a
+                                    else minimo der
+minimo (Raiz a izq ArbolVacio) = if a <= minimo izq
+                                    then a
+                                    else minimo izq
 minimo (Raiz a izq der) = if a <= minimo izq && a <= minimo der
                             then a
                             else if minimo izq <= minimo der && minimo izq <= a
@@ -50,6 +55,12 @@ minimo (Raiz a izq der) = if a <= minimo izq && a <= minimo der
 maximo :: Ord a => Arbol a -> a 
 maximo ArbolVacio = error "Arbol vacio"
 maximo (Raiz a ArbolVacio ArbolVacio) = a
+maximo (Raiz a ArbolVacio der) = if a >= maximo der
+                                    then a
+                                    else maximo der
+maximo (Raiz a izq ArbolVacio) = if a >= maximo izq
+                                    then a
+                                    else maximo izq
 maximo (Raiz a izq der) = if a >= maximo izq && a >= maximo der
                             then a
                             else if maximo izq >= maximo der && maximo izq >= a
