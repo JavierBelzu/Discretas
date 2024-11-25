@@ -27,6 +27,9 @@ variables (f1 :<=>: f2) = conjunto(variables f1 ++ variables f2)
 ---Conjunto
 conjunto :: [Var] -> [Var]
 conjunto [] = []
+conjunto (x:xs) = if estaContenido xs x then conjunto xs
+                  else x:conjunto xs
+
 
 estaContenido :: [Var] -> Var -> Bool
 estaContenido [] _ = False
@@ -75,19 +78,26 @@ interpretacion (f1 :<=>: f2) vals = (interpretacion f1 vals) == (interpretacion 
 
 -------------------- EJERCICIO 5 --------------------
 combinaciones :: Formula -> [[(Var,Bool)]]
-combinaciones f = combinacionesAux (variables f)
+combinaciones f = aux2 (aux (variables f))
 -----------------------------------------------------
 
 -------------------- EJERCICIO 6 --------------------
 
---tablaDeVerdad :: Formula -> [([(Var,Bool)],Bool)]
---tablaDeVerdad f = [(x, interpretacion f x) | x <- combinaciones f]
+tablaDeVerdad :: Formula -> [([(Var,Bool)],Bool)]
+tablaDeVerdad f = [(x, interpretacion f x) | x <- combinaciones f]
 -----------------------------------------------------
 
 
---auxiliar
-longitud :: [a] -> Int
-longitud [] = 0
-longitud (x:xs) = 1 + longitud xs
+--Funciones auxiliares
+aux :: [Var] -> [[(Var, Bool)]]
+aux [] = [[]]
+aux (x:xs) = [(x, False):ys | ys <- aux xs] ++ [(x, True):ys | ys <- aux xs]
+
+aux2 :: [[(Var, Bool)]] -> [[(Var, Bool)]]
+aux2 [] = []
+aux2 (x:xs) = x : aux2 xs
+
+
+
 
 
