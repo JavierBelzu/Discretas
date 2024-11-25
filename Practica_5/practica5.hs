@@ -31,7 +31,7 @@ conjunto [] = []
 estaContenido :: [Var] -> Var -> Bool
 estaContenido [] _ = False
 estaContenido (x:xs) y = if x == y then True 
-                        else estaContenido x ys
+                        else estaContenido xs y
 
 
 -------------------- EJERCICIO 2 --------------------
@@ -75,13 +75,13 @@ interpretacion (f1 :<=>: f2) vals = (interpretacion f1 vals) == (interpretacion 
 
 -------------------- EJERCICIO 5 --------------------
 combinaciones :: Formula -> [[(Var,Bool)]]
-combinaciones _ = undefined
+combinaciones f = combinacionesAux (variables f)
 -----------------------------------------------------
 
 -------------------- EJERCICIO 6 --------------------
 
-tablaDeVerdad :: Formula -> [([(Var,Bool)],Bool)]
-tablaDeVerdad _ = undefined
+--tablaDeVerdad :: Formula -> [([(Var,Bool)],Bool)]
+--tablaDeVerdad f = [(x, interpretacion f x) | x <- combinaciones f]
 -----------------------------------------------------
 
 
