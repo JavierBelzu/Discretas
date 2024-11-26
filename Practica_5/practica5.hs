@@ -20,23 +20,17 @@ variables (f1 :&: f2) = conjunto(variables f1 ++ variables f2)
 variables (f1 :|: f2) = conjunto(variables f1 ++ variables f2)
 variables (f1 :=>: f2) = conjunto(variables f1 ++ variables f2)
 variables (f1 :<=>: f2) = conjunto(variables f1 ++ variables f2)
-
-
 -----------------------------------------------------
-
 ---Conjunto
 conjunto :: [Var] -> [Var]
 conjunto [] = []
 conjunto (x:xs) = if estaContenido xs x then conjunto xs
                   else x:conjunto xs
 
-
 estaContenido :: [Var] -> Var -> Bool
 estaContenido [] _ = False
 estaContenido (x:xs) y = if x == y then True 
                         else estaContenido xs y
-
-
 -------------------- EJERCICIO 2 --------------------
 negacion :: Formula -> Formula
 negacion (Atom a) = Neg (Atom a)
@@ -45,21 +39,18 @@ negacion (f1 :&: f2) = (negacion f1) :|: (negacion f2)
 negacion (f1 :|: f2) = (negacion f1) :&: (negacion f2)
 negacion (f1 :=>: f2) = f1 :&: (negacion f2)
 negacion (f1 :<=>: f2) = (f1 :&: (negacion f2)) :|: ((negacion f1) :&: f2)
-
 -----------------------------------------------------
-
 -------------------- EJERCICIO 3 --------------------
 equivalencia :: Formula -> Formula
 equivalencia (Atom a) = Atom a
 equivalencia (Neg f) = Neg (equivalencia f)
 equivalencia (f1 :&: f2) = (equivalencia f1) :&: (equivalencia f2)
 equivalencia (f1 :|: f2) = (equivalencia f1) :|: (equivalencia f2)
-equivalencia (f1 :=>: f2) = (equivalencia (Neg f1)) :|: (equivalencia f2)
-equivalencia (f1 :<=>: f2) = ((equivalencia f1) :&: (equivalencia f2)) :|: ((equivalencia (Neg f1)) :&: (equivalencia (Neg f2)))
-
+equivalencia (f1 :=>: f2) = negacion (equivalencia f1) :|: (equivalencia f2)
+equivalencia (f1 :<=>: f2) = ((equivalencia f1) :&: (equivalencia f2)) :|: (negacion (equivalencia f1) :&: negacion (equivalencia f2))
 -----------------------------------------------------
-
 -------------------- EJERCICIO 4 --------------------
+--Función que dado una variable y una lista de tuplas (Var, Bool) devuelve el valor booleano de la variable
 lookupVar :: Var -> [(Var, Bool)] -> Bool
 lookupVar v [] = error "No todas las variables están definidas"
 lookupVar v ((x, val):xs) = if v == x then val 
@@ -72,22 +63,16 @@ interpretacion (f1 :&: f2) vals = (interpretacion f1 vals) && (interpretacion f2
 interpretacion (f1 :|: f2) vals = (interpretacion f1 vals) || (interpretacion f2 vals)
 interpretacion (f1 :=>: f2) vals = not (interpretacion f1 vals) || (interpretacion f2 vals)
 interpretacion (f1 :<=>: f2) vals = (interpretacion f1 vals) == (interpretacion f2 vals)
-
 -----------------------------------------------------
-
-
 -------------------- EJERCICIO 5 --------------------
 combinaciones :: Formula -> [[(Var,Bool)]]
 combinaciones f = aux2 (aux (variables f))
 -----------------------------------------------------
-
 -------------------- EJERCICIO 6 --------------------
 
 tablaDeVerdad :: Formula -> [([(Var,Bool)],Bool)]
 tablaDeVerdad f = [(x, interpretacion f x) | x <- combinaciones f]
 -----------------------------------------------------
-
-
 --Funciones auxiliares
 aux :: [Var] -> [[(Var, Bool)]]
 aux [] = [[]]
